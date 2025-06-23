@@ -12,7 +12,6 @@ const Gallery = () => {
     { src: "/gallery/8.avif", alt: "Gallery Image 8" }
   ];
   const [current, setCurrent] = useState(0);
-  const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null);
   const [blurring, setBlurring] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -38,7 +37,6 @@ const Gallery = () => {
     setTimeout(() => {
       setCurrent(nextIdx);
       setBlurring(false);
-      setSlideDir(null);
     }, 180); // Fast blur transition
   };
 

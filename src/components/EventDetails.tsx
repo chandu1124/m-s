@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Calendar, Clock, MapPin, Navigation, ExternalLink } from 'lucide-react';
+import { Calendar, Clock, ExternalLink } from 'lucide-react';
+import { gtagEvent, getDeviceInfo } from '../lib/gtag';
 
 const EventDetails = () => {
-  const [isMapVisible, setIsMapVisible] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
-  const [isVenueAnimated, setIsVenueAnimated] = useState(false); // New state for venue address
-  const [isAddressAnimated, setIsAddressAnimated] = useState(false); // New state for address animation
-  const mapRef = useRef<HTMLDivElement>(null);
+  const [isVenueAnimated, setIsVenueAnimated] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const venueRef = useRef<HTMLDivElement>(null); // New ref for venue address
-  const addressRef = useRef<HTMLDivElement>(null); // New ref for address animation
-  const videoRef = useRef<HTMLVideoElement>(null); // Ref for the video element
+  const venueRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,17 +17,12 @@ const EventDetails = () => {
           }
         });
       },
-      { threshold: 0.05 } // Lowered threshold for earlier trigger
+      { threshold: 0.05 }
     );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Venue address animation observer
   useEffect(() => {
     const venueObserver = new IntersectionObserver(
       (entries) => {
@@ -43,60 +34,46 @@ const EventDetails = () => {
       },
       { threshold: 0.1 }
     );
-    if (venueRef.current) {
-      venueObserver.observe(venueRef.current);
-    }
+    if (venueRef.current) venueObserver.observe(venueRef.current);
     return () => venueObserver.disconnect();
   }, []);
 
-  // Dedicated observer for address section
-  useEffect(() => {
-    const addressObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsAddressAnimated(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    if (addressRef.current) {
-      addressObserver.observe(addressRef.current);
-    }
-    return () => addressObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!videoRef.current) return;
-    const observer = new window.IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (videoRef.current) {
-            if (entry.intersectionRatio === 1) {
-              videoRef.current.play();
-            } else {
-              videoRef.current.pause();
-            }
-          }
-        });
-      },
-      { threshold: 1.0 }
-    );
-    observer.observe(videoRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const handleLocationClick = () => {
-    setIsMapVisible(true);
-    if (mapRef.current) {
-      mapRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+  // @ts-ignore: gtag is injected by Google Analytics
   const handleDirectionsClick = () => {
+    const device = getDeviceInfo();
+    gtagEvent({
+      action: 'click',
+      category: 'Button',
+      label: 'Get Directions',
+      value: device.deviceLabel,
+      device_type: device.deviceType,
+      device_vendor: device.deviceVendor,
+      device_model: device.deviceModel,
+      os: device.os,
+      browser: device.browser,
+      page_path: window.location.pathname,
+      timestamp: Date.now(),
+    });
     window.open('https://www.google.com/maps/search/KMM+Royal+Convention+Center', '_blank');
   };
+
+  // Track device info on page load
+  useEffect(() => {
+    const device = getDeviceInfo();
+    gtagEvent({
+      action: 'page_view',
+      category: 'Page',
+      label: window.location.pathname,
+      value: device.deviceLabel,
+      device_type: device.deviceType,
+      device_vendor: device.deviceVendor,
+      device_model: device.deviceModel,
+      os: device.os,
+      browser: device.browser,
+      page_path: window.location.pathname,
+      timestamp: Date.now(),
+    });
+  }, []);
 
   return (
     <section 
@@ -126,13 +103,8 @@ const EventDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
           {/* Wedding Ceremony */}
           <div
-            data-aos="fade-right"
-            data-aos-delay="0"
-            data-aos-duration="400"
             className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-rose-100 \
-              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-left' : 'opacity-0 transform -translate-x-20 animate-fade-out-down'}
-              md:animate-fade-in-left md:opacity-100 md:translate-x-0
-              sm:animate-fade-in-up sm:opacity-100 sm:translate-y-0`}
+              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-left' : 'opacity-0 transform -translate-x-20 animate-fade-out-down'}`}
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-rose-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -153,25 +125,13 @@ const EventDetails = () => {
                 <Clock className="text-rose-600 mr-2" size={24} />
                 <span className="text-gray-800 font-medium text-lg">9:40 AM to 10:30 AM</span>
               </div>
-              <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
-                {/* <MapPin className="text-rose-600 mr-4 mt-1" size={24} />
-                <div>
-                  <p className="text-gray-800 font-semibold text-lg">KMM Royal Convention Center</p>
-                  <p className="text-rose-700 text-base">Wedding Hall</p>
-                </div> */}
-              </div>
             </div>
           </div>
 
           {/* Reception */}
           <div
-            data-aos="fade-left"
-            data-aos-delay="180"
-            data-aos-duration="400"
             className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-red-100 \
-              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-right' : 'opacity-0 transform translate-x-20 animate-fade-out-down'}
-              md:animate-fade-in-right md:opacity-100 md:translate-x-0
-              sm:animate-fade-in-up sm:opacity-100 sm:translate-y-0`}
+              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-right' : 'opacity-0 transform translate-x-20 animate-fade-out-down'}`}
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-rose-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -191,13 +151,6 @@ const EventDetails = () => {
               <div className="flex items-center justify-center group-hover:translate-x-2 transition-transform duration-300">
                 <Clock className="text-red-600 mr-2" size={24} />
                 <span className="text-gray-800 font-medium text-lg">6:30 PM onwards</span>
-              </div>
-              <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
-                {/* <MapPin className="text-red-600 mr-4 mt-1" size={24} />
-                <div>
-                  <p className="text-gray-800 font-semibold text-lg">KMM Royal Convention Center</p>
-                  <p className="text-red-700 text-base">Reception Hall</p>
-                </div> */}
               </div>
             </div>
           </div>

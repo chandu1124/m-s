@@ -54,7 +54,7 @@ const OurStory = () => {
             Guided by family, nurtured by tradition, and sealed with eternal love
           </p>
           <p className="text-lg text-pink-600 font-medium italic mt-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            " A match made by them, a love made by us "
+            " A match made by PARENTS, a love made by US "
           </p>
         </div>
 

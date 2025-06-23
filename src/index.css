@@ -101,3 +101,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+/*
+Add this to your global CSS (e.g., src/index.css or src/App.css):
+*/
+.animate-mangal-letter {
+  animation: mangal-letter 0.5s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes mangal-letter {
+  0% { opacity: 0; transform: translateY(1em) scale(0.8) rotate(-10deg); }
+  80% { opacity: 1; transform: translateY(-0.1em) scale(1.05) rotate(2deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+/* Mangalsutra and Seven Steps Animations */
+@keyframes mangal-dot {
+  0% { opacity: 0; transform: scale(0.2); }
+  80% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-mangal-dot {
+  animation: mangal-dot 0.7s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes seven-step {
+  0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+  60% { opacity: 1; transform: scale(1.1) translateY(-6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-seven-step {
+  animation: seven-step 1.5s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes mangal-dot-continuous {
+  0% { opacity: 0.2; transform: scale(0.7); }
+  30% { opacity: 1; transform: scale(1.2); }
+  60% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.2; transform: scale(0.7); }
+}
+.animate-mangal-dot-continuous {
+  animation: mangal-dot-continuous 1.8s cubic-bezier(0.4,0,0.2,1) infinite;
+}

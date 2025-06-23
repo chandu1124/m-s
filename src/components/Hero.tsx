@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Heart } from 'lucide-react';
 
 const Hero = () => {
@@ -10,10 +10,9 @@ const Hero = () => {
   });
   const [scrollY, setScrollY] = useState(0);
   const [isMarried, setIsMarried] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const targetDate = new Date('2025-08-04T09:40:00').getTime(); // restored to original wedding date
+    const targetDate = new Date('2025-08-04T09:40:00').getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -36,9 +35,7 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.pageYOffset);
-    };
+    const handleScroll = () => setScrollY(window.pageYOffset);
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -47,7 +44,6 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      ref={heroRef}
       className="relative min-h-screen overflow-hidden flex flex-col justify-center"
     >
       {/* Background Image with Parallax Effect */}
@@ -189,14 +185,32 @@ const Hero = () => {
 
           {/* Simple Elegant Quote */}
           <div 
-            className="animate-text-reveal"
+            className="mt-8"
             style={{ 
               animationDelay: '2s',
               transform: `translateY(${scrollY * -0.03}px)`
             }}
           >
-            <div className="text-lg sm:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed break-words whitespace-normal sm:whitespace-pre-line">
-              "A match made by them, a love made by us"
+            <div className="text-lg sm:text-xl text-white font-light max-w-2xl mx-auto leading-relaxed break-words whitespace-normal sm:whitespace-pre-line flex items-center justify-center">
+              <span className="inline-block relative animate-text-reveal">
+                <span>
+                  "Like <span className='text-white font-bold'>sacred threads</span> in a <span className='text-yellow-400 font-bold'>mangalsutra</span>, our <span className='text-yellow-400 font-bold'>fates</span> are <span className='text-white font-bold'>woven together</span>"
+                </span>
+              </span>
+            </div>
+            {/* Continuous Mangalsutra Dots Animation */}
+            <div className="flex justify-center items-center mt-4 gap-1">
+              {[...Array(12)].map((_, i) => (
+                <span
+                  key={i}
+                  className="inline-block w-2 h-2 rounded-full bg-yellow-500 animate-mangal-dot-continuous"
+                  style={{
+                    animationDelay: `${i * 0.18}s`,
+                    boxShadow: '0 0 4px #eab308',
+                    verticalAlign: 'middle'
+                  }}
+                ></span>
+              ))}
             </div>
           </div>
 
