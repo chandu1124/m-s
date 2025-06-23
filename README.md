@@ -47,3 +47,7 @@ This project is built with:
 =======
 - Tailwind CSS
 >>>>>>> 800909c (Made changes before syncing with remote)
+code README.md
+# Wedding Invitation Website
+
+Welcome to our official wedding invite!
