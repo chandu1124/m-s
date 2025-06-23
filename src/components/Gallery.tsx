@@ -14,30 +14,21 @@ const Gallery = () => {
   const [current, setCurrent] = useState(0);
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null);
   const [blurring, setBlurring] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [showPoster, setShowPoster] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!videoRef.current) return;
+    if (!videoContainerRef.current) return;
     const observer = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (videoRef.current) {
-            // Only play if fully visible (intersectionRatio === 1)
-            if (entry.intersectionRatio === 1) {
-              videoRef.current.play();
-              setShowPoster(false);
-            } else {
-              videoRef.current.pause();
-              videoRef.current.currentTime = 0; // Optionally reset to start
-              setShowPoster(true);
-            }
-          }
+          // Only show video if fully visible
+          setShowVideo(entry.intersectionRatio === 1);
         });
       },
       { threshold: [0, 1] }
     );
-    observer.observe(videoRef.current);
+    observer.observe(videoContainerRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -62,8 +53,8 @@ const Gallery = () => {
           " Each frame holds a memory, each moment tells our story captured with love on the path to forever "
         </p>
         {/* Pre-Wedding Video as background/first item */}
-        <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12 relative">
-          {showPoster && (
+        <div ref={videoContainerRef} className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12 relative">
+          {!showVideo && (
             <img
               src="/gallery/sc1.webp"
               alt="Gallery Poster"
@@ -71,17 +62,19 @@ const Gallery = () => {
               style={{ pointerEvents: 'none' }}
             />
           )}
-          <video
-            ref={videoRef}
-            controls
-            muted
-            poster="/gallery/sc1.webp"
-            className="w-full h-full object-cover relative z-0"
-            style={showPoster ? { visibility: 'hidden' } : { visibility: 'visible' }}
-          >
-            <source src="/gallery/vd1.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          {showVideo && (
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/_9EOY9Pf40g?si=H07-z1kQCJE3ciF-&autoplay=1&mute=1&rel=0"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="w-full h-full object-cover relative z-0"
+              style={{ minHeight: 320 }}
+            ></iframe>
+          )}
         </div>
         <div className="relative w-full flex flex-col items-center">
           <div className="relative w-full flex items-center justify-center mb-8 overflow-hidden" style={{minHeight: 320}}>

@@ -108,14 +108,14 @@ const Hero = () => {
 
           {/* Wedding Date */}
           <div 
-            className="mb-12 animate-fade-in-up"
+            className="mb-12 animate-fade-in-up flex justify-center w-full"
             style={{ 
               animationDelay: '0s', // Show immediately
               animationDuration: '0.7s',
               transform: `translateY(${scrollY * -0.1}px)`
             }}
           >
-            <div className="inline-flex items-center bg-white/20 backdrop-blur-md px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-full shadow-xl border border-white/30 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
+            <div className="inline-flex items-center bg-white/20 backdrop-blur-md px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-full shadow-xl border border-white/30 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto" style={{width: 'auto', minWidth: 220}}>
               <Calendar size={24} className="text-yellow-300 mr-3" />
               <span className="font-bold text-base sm:text-lg md:text-xl text-white truncate">
                 August 4th, 2025
