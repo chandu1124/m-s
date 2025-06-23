@@ -92,13 +92,13 @@ const Hero = () => {
               transform: `translateY(${scrollY * -0.2}px)`
             }}
           >
-            <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 leading-tight flex items-center justify-center gap-6 relative" style={{ lineHeight: 1.2, paddingBottom: '0.25em' }}>
+            <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 leading-tight flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-2 sm:gap-6 relative flex-wrap text-balance" style={{ lineHeight: 1.2, paddingBottom: '0.25em' }}>
               <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-blue-300 bg-clip-text text-transparent hover:scale-105 transition-transform duration-500">
                 Manoj
               </span>
-              <span className="relative flex items-center justify-center">
+              <span className="relative flex items-center justify-center align-middle my-2 sm:my-0" style={{marginTop: '0.1em'}}>
                 <span className="absolute -inset-4 animate-ping rounded-full bg-pink-300/40 z-0" style={{filter: 'blur(8px)'}}></span>
-                <Heart size={48} className="text-red-400 drop-shadow-lg animate-bounce-slow z-10" style={{filter: 'drop-shadow(0 0 8px #f87171)'}} />
+                <Heart size={48} className="text-red-400 drop-shadow-lg animate-bounce-slow z-10 align-middle" style={{filter: 'drop-shadow(0 0 8px #f87171)', verticalAlign: 'middle'}} />
               </span>
               <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent hover:scale-105 transition-transform duration-500">
                 Soniya
@@ -115,9 +115,9 @@ const Hero = () => {
               transform: `translateY(${scrollY * -0.1}px)`
             }}
           >
-            <div className="inline-flex items-center bg-white/20 backdrop-blur-md px-6 py-3 sm:px-8 sm:py-4 rounded-full shadow-xl border border-white/30">
+            <div className="inline-flex items-center bg-white/20 backdrop-blur-md px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-full shadow-xl border border-white/30 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
               <Calendar size={24} className="text-yellow-300 mr-3" />
-              <span className="font-bold text-lg sm:text-xl text-white">
+              <span className="font-bold text-base sm:text-lg md:text-xl text-white truncate">
                 August 4th, 2025
               </span>
             </div>
@@ -136,7 +136,7 @@ const Hero = () => {
               <h3 className="text-xl sm:text-2xl font-serif text-white mb-6 font-medium">
                 Countdown to Our Special Day
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-lg sm:max-w-2xl mx-auto px-4 md:px-0">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-2 sm:px-4 md:px-0 w-full">
                 {[
                   { label: 'Days', value: timeLeft.days, color: 'from-yellow-400 to-orange-500' },
                   { label: 'Hours', value: timeLeft.hours, color: 'from-pink-400 to-red-500' },

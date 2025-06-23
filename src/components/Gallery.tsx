@@ -15,22 +15,30 @@ const Gallery = () => {
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null);
   const [blurring, setBlurring] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [showPoster, setShowPoster] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!videoRef.current) return;
-      const rect = videoRef.current.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
-      if (inView) {
-        if (videoRef.current.paused) videoRef.current.play();
-      } else {
-        if (!videoRef.current.paused) videoRef.current.pause();
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    // Check on mount
-    setTimeout(handleScroll, 100);
-    return () => window.removeEventListener('scroll', handleScroll);
+    if (!videoRef.current) return;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (videoRef.current) {
+            // Only play if fully visible (intersectionRatio === 1)
+            if (entry.intersectionRatio === 1) {
+              videoRef.current.play();
+              setShowPoster(false);
+            } else {
+              videoRef.current.pause();
+              videoRef.current.currentTime = 0; // Optionally reset to start
+              setShowPoster(true);
+            }
+          }
+        });
+      },
+      { threshold: [0, 1] }
+    );
+    observer.observe(videoRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const handleChange = (nextIdx: number) => {
@@ -54,8 +62,23 @@ const Gallery = () => {
           " Each frame holds a memory, each moment tells our story captured with love on the path to forever "
         </p>
         {/* Pre-Wedding Video as background/first item */}
-        <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12">
-          <video ref={videoRef} controls muted poster="/gallery/1.jpeg" className="w-full h-full object-cover">
+        <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12 relative">
+          {showPoster && (
+            <img
+              src="/gallery/sc1.webp"
+              alt="Gallery Poster"
+              className="absolute inset-0 w-full h-full object-cover z-10 bg-white"
+              style={{ pointerEvents: 'none' }}
+            />
+          )}
+          <video
+            ref={videoRef}
+            controls
+            muted
+            poster="/gallery/sc1.webp"
+            className="w-full h-full object-cover relative z-0"
+            style={showPoster ? { visibility: 'hidden' } : { visibility: 'visible' }}
+          >
             <source src="/gallery/vd1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>

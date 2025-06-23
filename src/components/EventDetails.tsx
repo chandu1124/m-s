@@ -4,8 +4,13 @@ import { Calendar, Clock, MapPin, Navigation, ExternalLink } from 'lucide-react'
 const EventDetails = () => {
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
+  const [isVenueAnimated, setIsVenueAnimated] = useState(false); // New state for venue address
+  const [isAddressAnimated, setIsAddressAnimated] = useState(false); // New state for address animation
   const mapRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const venueRef = useRef<HTMLDivElement>(null); // New ref for venue address
+  const addressRef = useRef<HTMLDivElement>(null); // New ref for address animation
+  const videoRef = useRef<HTMLVideoElement>(null); // Ref for the video element
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -16,13 +21,69 @@ const EventDetails = () => {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.05 } // Lowered threshold for earlier trigger
     );
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
 
+    return () => observer.disconnect();
+  }, []);
+
+  // Venue address animation observer
+  useEffect(() => {
+    const venueObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVenueAnimated(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    if (venueRef.current) {
+      venueObserver.observe(venueRef.current);
+    }
+    return () => venueObserver.disconnect();
+  }, []);
+
+  // Dedicated observer for address section
+  useEffect(() => {
+    const addressObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsAddressAnimated(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    if (addressRef.current) {
+      addressObserver.observe(addressRef.current);
+    }
+    return () => addressObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (videoRef.current) {
+            if (entry.intersectionRatio === 1) {
+              videoRef.current.play();
+            } else {
+              videoRef.current.pause();
+            }
+          }
+        });
+      },
+      { threshold: 1.0 }
+    );
+    observer.observe(videoRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -51,9 +112,9 @@ const EventDetails = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className={`text-center mb-16 transition-all duration-1000 ${
-          isAnimated ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'
+          isAnimated ? 'opacity-100 transform translate-y-0 animate-fade-in-up' : 'opacity-0 transform translate-y-10'
         }`}>
-          <h2 className="font-serif text-6xl md:text-7xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-red-600 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 whitespace-pre-line break-words leading-tight md:leading-tight animate-fade-in-up">
+          <h2 className="font-serif text-6xl md:text-7xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-red-600 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 whitespace-pre-line break-words leading-tight md:leading-tight">
             Journey to Forever
           </h2>
           <div className="w-32 h-1 bg-gradient-to-r from-rose-500 via-pink-500 to-red-500 mx-auto mb-8"></div>
@@ -62,15 +123,16 @@ const EventDetails = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
           {/* Wedding Ceremony */}
           <div
-            data-aos="fade-up"
+            data-aos="fade-right"
             data-aos-delay="0"
-            data-aos-duration="600"
-            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-700 hover:scale-105 border border-rose-100 ${
-              isAnimated ? 'opacity-100 transform translate-x-0' : 'opacity-0 transform -translate-x-20'
-            }`}
+            data-aos-duration="400"
+            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-rose-100 \
+              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-left' : 'opacity-0 transform -translate-x-20 animate-fade-out-down'}
+              md:animate-fade-in-left md:opacity-100 md:translate-x-0
+              sm:animate-fade-in-up sm:opacity-100 sm:translate-y-0`}
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-rose-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -82,14 +144,14 @@ const EventDetails = () => {
               <div className="w-16 h-1 bg-gradient-to-r from-rose-500 to-pink-500 mx-auto"></div>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-center group-hover:translate-x-2 transition-transform duration-300">
-                <Calendar className="text-rose-600 mr-4" size={24} />
-                <span className="text-gray-800 font-medium text-lg">August 4th, 2024</span>
+            <div className="space-y-6 text-center">
+              <div className="flex items-center justify-center group-hover:translate-x-2 transition-transform duration-300">
+                <Calendar className="text-rose-600 mr-2" size={24} />
+                <span className="text-gray-800 font-medium text-lg">4th Monday, August 2024</span>
               </div>
-              <div className="flex items-center group-hover:translate-x-2 transition-transform duration-300">
-                <Clock className="text-rose-600 mr-4" size={24} />
-                <span className="text-gray-800 font-medium text-lg">9:40 AM to 10:30 PM</span>
+              <div className="flex items-center justify-center group-hover:translate-x-2 transition-transform duration-300">
+                <Clock className="text-rose-600 mr-2" size={24} />
+                <span className="text-gray-800 font-medium text-lg">9:40 AM to 10:30 AM</span>
               </div>
               <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
                 {/* <MapPin className="text-rose-600 mr-4 mt-1" size={24} />
@@ -103,12 +165,13 @@ const EventDetails = () => {
 
           {/* Reception */}
           <div
-            data-aos="fade-up"
+            data-aos="fade-left"
             data-aos-delay="180"
-            data-aos-duration="600"
-            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-700 hover:scale-105 border border-red-100 ${
-              isAnimated ? 'opacity-100 transform translate-x-0' : 'opacity-0 transform translate-x-20'
-            }`}
+            data-aos-duration="400"
+            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-red-100 \
+              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-right' : 'opacity-0 transform translate-x-20 animate-fade-out-down'}
+              md:animate-fade-in-right md:opacity-100 md:translate-x-0
+              sm:animate-fade-in-up sm:opacity-100 sm:translate-y-0`}
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-rose-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -120,13 +183,13 @@ const EventDetails = () => {
               <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-rose-500 mx-auto"></div>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-center group-hover:translate-x-2 transition-transform duration-300">
-                <Calendar className="text-red-600 mr-4" size={24} />
+            <div className="space-y-6 text-center">
+              <div className="flex items-center justify-center group-hover:translate-x-2 transition-transform duration-300">
+                <Calendar className="text-red-600 mr-2" size={24} />
                 <span className="text-gray-800 font-medium text-lg">3rd Sunday, August 2024</span>
               </div>
-              <div className="flex items-center group-hover:translate-x-2 transition-transform duration-300">
-                <Clock className="text-red-600 mr-4" size={24} />
+              <div className="flex items-center justify-center group-hover:translate-x-2 transition-transform duration-300">
+                <Clock className="text-red-600 mr-2" size={24} />
                 <span className="text-gray-800 font-medium text-lg">6:30 PM onwards</span>
               </div>
               <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
@@ -141,9 +204,12 @@ const EventDetails = () => {
         </div>
 
         {/* Enhanced Venue Location */}
-        <div className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-10 border border-rose-200 transition-all duration-1000 hover:shadow-3xl ${
-          isAnimated ? 'opacity-100 animate-fly-in-right' : 'opacity-0'
-        } relative overflow-hidden max-w-5xl mx-auto`}> 
+        <div
+          ref={venueRef}
+          className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-10 border border-rose-200 transition-all duration-1000 hover:shadow-3xl
+          ${isVenueAnimated ? 'opacity-100 animate-fade-in-up' : 'opacity-0 translate-y-10'}
+          relative overflow-hidden max-w-5xl mx-auto flex items-center justify-center min-h-[400px]`}
+        >
           {/* Venue background image */}
           <img 
             src="/kmm.jpeg" 
@@ -151,11 +217,12 @@ const EventDetails = () => {
             className="absolute inset-0 w-full h-full object-cover opacity-30 rounded-3xl z-0"
             style={{filter: 'blur(2px)'}}
           />
-          <div className="relative z-10 text-center mb-10 pb-4">
-            <h3 className={`font-serif text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-700 via-pink-700 to-red-700 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 break-words whitespace-pre-line w-full max-w-full overflow-visible leading-snug min-h-[4.5rem] md:min-h-[6rem] flex items-center justify-center ${isAnimated ? 'animate-fly-in-left' : 'opacity-0'}`}>              The Setting of Our Story
+          <div className="relative z-10 text-center mb-10 pb-4 flex flex-col items-center justify-center w-full">
+            <h3 className={`font-serif text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-700 via-pink-700 to-red-700 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 break-words whitespace-pre-line w-full max-w-full overflow-visible leading-snug min-h-[4.5rem] md:min-h-[6rem] flex items-center justify-center ${isVenueAnimated ? 'animate-fade-in-center' : 'opacity-0'}`}>The Setting of Our Story
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-rose-500 to-red-500 mx-auto mb-8"></div>
-            <div className={`max-w-5xl mx-auto space-y-6 text-gray-700 leading-relaxed ${isAnimated ? 'animate-fly-in-up' : 'opacity-0'}`}>              <p className="text-xl font-medium text-rose-800">
+            <div className={`max-w-5xl mx-auto space-y-6 text-gray-700 leading-relaxed ${isVenueAnimated ? 'animate-fade-in-center' : 'opacity-0'}`}>
+              <p className="text-xl font-medium text-rose-800">
                 "A place where culture and grace come together to write love’s most beautiful chapter"
               </p>
               <p className="text-lg text-gray-700 md:text-xl">

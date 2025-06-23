@@ -56,11 +56,11 @@ const Footer = () => {
 
         <div className="mt-12 text-center">
           <div className="flex justify-center space-x-3 mb-6">
-            <div className="w-3 h-3 bg-[#d4af37] rounded-full animate-bounce"></div>
-            <div className="w-3 h-3 bg-[#eae6ff] rounded-full animate-bounce delay-100"></div>
-            <div className="w-3 h-3 bg-[#b76e79] rounded-full animate-bounce delay-200"></div>
-            <div className="w-3 h-3 bg-[#800000] rounded-full animate-bounce delay-300"></div>
-            <div className="w-3 h-3 bg-[#d4af37] rounded-full animate-bounce delay-400"></div>
+            <Heart size={20} className="text-[#d4af37] animate-bounce" />
+            <Heart size={20} className="text-[#d4af37] animate-bounce delay-100" />
+            <Heart size={20} className="text-[#d4af37] animate-bounce delay-200" />
+            <Heart size={20} className="text-[#d4af37] animate-bounce delay-300" />
+            <Heart size={20} className="text-[#d4af37] animate-bounce delay-400" />
           </div>
           <p className="text-lg flex items-center justify-center hover:scale-105 transition-transform duration-500 font-medium text-[#191970]">
             Crafted with <Heart size={18} className="inline mx-2 text-[#d4af37] animate-heart-beat" /> for Manoj & Soniya's Wedding
