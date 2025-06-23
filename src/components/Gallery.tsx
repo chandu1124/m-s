@@ -53,7 +53,7 @@ const Gallery = () => {
           " Each frame holds a memory, each moment tells our story captured with love on the path to forever "
         </p>
         {/* Pre-Wedding Video as background/first item */}
-        <div ref={videoContainerRef} className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12 relative">
+        <div ref={videoContainerRef} className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12 relative flex items-center justify-center">
           {!showVideo && (
             <img
               src="/gallery/sc1.webp"
@@ -64,15 +64,15 @@ const Gallery = () => {
           )}
           {showVideo && (
             <iframe
-              width="100%"
-              height="100%"
+              width="560"
+              height="315"
               src="https://www.youtube.com/embed/_9EOY9Pf40g?si=H07-z1kQCJE3ciF-&autoplay=1&mute=1&rel=0"
               title="YouTube video player"
               frameBorder="0"
               allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-              className="w-full h-full object-cover relative z-0"
-              style={{ minHeight: 320 }}
+              className="w-full h-full object-contain relative z-0 bg-black"
+              style={{ minHeight: 200, aspectRatio: '16/9', display: 'block' }}
             ></iframe>
           )}
         </div>

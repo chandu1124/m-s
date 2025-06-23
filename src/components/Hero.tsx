@@ -92,7 +92,7 @@ const Hero = () => {
               transform: `translateY(${scrollY * -0.2}px)`
             }}
           >
-            <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 leading-tight flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-2 sm:gap-6 relative flex-wrap text-balance" style={{ lineHeight: 1.2, paddingBottom: '0.25em' }}>
+            <h1 className="font-serif text-7xl xs:text-8xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 leading-tight flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-2 sm:gap-6 relative flex-wrap text-balance" style={{ lineHeight: 1.2, paddingBottom: '0.25em' }}>
               <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-blue-300 bg-clip-text text-transparent hover:scale-105 transition-transform duration-500">
                 Manoj
               </span>
@@ -195,8 +195,8 @@ const Hero = () => {
               transform: `translateY(${scrollY * -0.03}px)`
             }}
           >
-            <div className="text-lg sm:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed break-words whitespace-pre-line">
-              {`"A match made by them, a love made by us"`}
+            <div className="text-lg sm:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed break-words whitespace-normal sm:whitespace-pre-line">
+              "A match made by them, a love made by us"
             </div>
           </div>
 
