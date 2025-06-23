@@ -92,11 +92,11 @@ const EventDetails = () => {
                 <span className="text-gray-800 font-medium text-lg">9:40 AM to 10:30 PM</span>
               </div>
               <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
-                <MapPin className="text-rose-600 mr-4 mt-1" size={24} />
+                {/* <MapPin className="text-rose-600 mr-4 mt-1" size={24} />
                 <div>
                   <p className="text-gray-800 font-semibold text-lg">KMM Royal Convention Center</p>
                   <p className="text-rose-700 text-base">Wedding Hall</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -130,11 +130,11 @@ const EventDetails = () => {
                 <span className="text-gray-800 font-medium text-lg">6:30 PM onwards</span>
               </div>
               <div className="flex items-start group-hover:translate-x-2 transition-transform duration-300">
-                <MapPin className="text-red-600 mr-4 mt-1" size={24} />
+                {/* <MapPin className="text-red-600 mr-4 mt-1" size={24} />
                 <div>
                   <p className="text-gray-800 font-semibold text-lg">KMM Royal Convention Center</p>
                   <p className="text-red-700 text-base">Reception Hall</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -156,10 +156,10 @@ const EventDetails = () => {
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-rose-500 to-red-500 mx-auto mb-8"></div>
             <div className={`max-w-5xl mx-auto space-y-6 text-gray-700 leading-relaxed ${isAnimated ? 'animate-fly-in-up' : 'opacity-0'}`}>              <p className="text-xl font-medium text-rose-800">
-                "A place where culture and grace come together to write love’s most beautiful chapter."
+                "A place where culture and grace come together to write love’s most beautiful chapter"
               </p>
               <p className="text-lg text-gray-700 md:text-xl">
-                Experience the perfect blend of tradition and luxury at our chosen venue, where every detail reflects the beauty of our union.
+                Experience the perfect blend of tradition and luxury at our chosen venue, where every detail reflects the beauty of our union
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">

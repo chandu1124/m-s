@@ -42,4 +42,8 @@ This project is built with:
 - TypeScript
 - React
 - shadcn-ui
+<<<<<<< HEAD
 - Tailwind CSS
+=======
+- Tailwind CSS
+>>>>>>> 800909c (Made changes before syncing with remote)

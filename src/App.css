@@ -220,3 +220,34 @@
 .animate-slide-right {
   animation: slide-right 0.4s cubic-bezier(0.4,0,0.2,1);
 }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-slide-down {
+  animation: slide-down 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateY(350px) scale(1.1) rotate(360deg);
+  }
+}
+.animate-confetti-fall {
+  animation: confetti-fall 1.2s ease-out forwards;
+}

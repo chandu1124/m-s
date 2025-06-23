@@ -9,10 +9,11 @@ const Hero = () => {
     seconds: 0
   });
   const [scrollY, setScrollY] = useState(0);
+  const [isMarried, setIsMarried] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const targetDate = new Date('2025-08-04T09:40:00').getTime(); // updated to a future date
+    const targetDate = new Date('2025-08-04T09:40:00').getTime(); // restored to original wedding date
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -25,6 +26,9 @@ const Hero = () => {
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
+      } else {
+        setIsMarried(true);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     }, 1000);
 
@@ -120,38 +124,68 @@ const Hero = () => {
           </div>
 
           {/* Countdown Timer */}
-          <div 
-            className="mb-12 animate-slide-up"
-            style={{ 
-              animationDelay: '0s', // Show immediately
-              animationDuration: '0.7s',
-              transform: `translateY(${scrollY * -0.05}px)`
-            }}
-          >
-            <h3 className="text-xl sm:text-2xl font-serif text-white mb-6 font-medium">
-              Countdown to Our Special Day
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-lg sm:max-w-2xl mx-auto">
-              {[
-                { label: 'Days', value: timeLeft.days, color: 'from-yellow-400 to-orange-500' },
-                { label: 'Hours', value: timeLeft.hours, color: 'from-pink-400 to-red-500' },
-                { label: 'Minutes', value: timeLeft.minutes, color: 'from-green-400 to-emerald-500' },
-                { label: 'Seconds', value: timeLeft.seconds, color: 'from-blue-500 to-blue-700' }
-              ].map((item) => (
-                <div 
-                  key={item.label} 
-                  className={`bg-white/20 backdrop-blur-md rounded-xl p-3 sm:p-4 shadow-xl border border-white/20 hover:scale-105 transition-all duration-300`}
-                >
-                  <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-1 drop-shadow-lg`}>
-                    {item.value}
+          {!isMarried ? (
+            <div 
+              className="mb-12 animate-slide-up"
+              style={{ 
+                animationDelay: '0s', // Show immediately
+                animationDuration: '0.7s',
+                transform: `translateY(${scrollY * -0.05}px)`
+              }}
+            >
+              <h3 className="text-xl sm:text-2xl font-serif text-white mb-6 font-medium">
+                Countdown to Our Special Day
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-lg sm:max-w-2xl mx-auto px-4 md:px-0">
+                {[
+                  { label: 'Days', value: timeLeft.days, color: 'from-yellow-400 to-orange-500' },
+                  { label: 'Hours', value: timeLeft.hours, color: 'from-pink-400 to-red-500' },
+                  { label: 'Minutes', value: timeLeft.minutes, color: 'from-green-400 to-emerald-500' },
+                  { label: 'Seconds', value: timeLeft.seconds, color: 'from-blue-500 to-blue-700' }
+                ].map((item) => (
+                  <div 
+                    key={item.label} 
+                    className={`bg-white/20 backdrop-blur-md rounded-xl p-3 sm:p-4 shadow-xl border border-white/20 hover:scale-105 transition-all duration-300`}
+                  >
+                    <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-1 drop-shadow-lg`}>
+                      {item.value}
+                    </div>
+                    <div className="text-xs sm:text-sm font-medium text-white/90 uppercase tracking-wider">
+                      {item.label}
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm font-medium text-white/90 uppercase tracking-wider">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="mb-12 flex flex-col items-center justify-center animate-fade-in-up relative min-h-[300px]">
+              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-4 animate-gradient-move bg-gradient-to-r from-yellow-400 via-pink-400 to-blue-500 bg-clip-text text-transparent">
+                We Are Married!
+              </h2>
+              <div className="flex gap-4 mt-4">
+                {[...Array(8)].map((_, i) => (
+                  <span key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 via-yellow-400 to-blue-400 animate-firework" style={{ animationDelay: `${i * 0.2}s` }}></span>
+                ))}
+              </div>
+              {/* Confetti Celebration Animation */}
+              <div className="pointer-events-none absolute inset-0 z-50">
+                {[...Array(40)].map((_, i) => (
+                  <span
+                    key={i}
+                    className="absolute block w-2 h-6 rounded-full"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      background: `hsl(${Math.random() * 360}, 90%, 60%)`,
+                      opacity: 0.8,
+                      transform: `rotate(${Math.random() * 360}deg)`,
+                      animation: `confetti-fall 1.8s cubic-bezier(0.4,0,0.2,1) ${Math.random()}s both`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Simple Elegant Quote */}
           <div 
@@ -161,8 +195,8 @@ const Hero = () => {
               transform: `translateY(${scrollY * -0.03}px)`
             }}
           >
-            <div className="text-lg sm:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed">
-              "Two hearts, one beautiful journey"
+            <div className="text-lg sm:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed break-words whitespace-pre-line">
+              {`"A match made by them, a love made by us"`}
             </div>
           </div>
 

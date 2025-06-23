@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Gallery = () => {
   const images = [
@@ -11,10 +11,27 @@ const Gallery = () => {
     { src: "/gallery/7.jpeg", alt: "Gallery Image 7" },
     { src: "/gallery/8.avif", alt: "Gallery Image 8" }
   ];
-
   const [current, setCurrent] = useState(0);
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null);
   const [blurring, setBlurring] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!videoRef.current) return;
+      const rect = videoRef.current.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inView) {
+        if (videoRef.current.paused) videoRef.current.play();
+      } else {
+        if (!videoRef.current.paused) videoRef.current.pause();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    // Check on mount
+    setTimeout(handleScroll, 100);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleChange = (nextIdx: number) => {
     if (nextIdx === current) return;
@@ -36,6 +53,13 @@ const Gallery = () => {
         <p className="text-lg text-gray-600 mb-8 text-center">
           " Each frame holds a memory, each moment tells our story captured with love on the path to forever "
         </p>
+        {/* Pre-Wedding Video as background/first item */}
+        <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-200 mb-12">
+          <video ref={videoRef} controls muted poster="/gallery/1.jpeg" className="w-full h-full object-cover">
+            <source src="/gallery/vd1.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
         <div className="relative w-full flex flex-col items-center">
           <div className="relative w-full flex items-center justify-center mb-8 overflow-hidden" style={{minHeight: 320}}>
             {/* Left arrow */}
@@ -47,12 +71,14 @@ const Gallery = () => {
             >
               <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="#e11d48" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
-            <img
-              src={images[current].src}
-              alt={images[current].alt}
-              className={`w-full max-h-[600px] object-contain rounded-2xl shadow-2xl border-4 border-white bg-gray-50 transition-all duration-200 ease-in-out ${blurring ? 'blur-sm opacity-70' : ''}`}
-              style={{ minHeight: 320 }}
-            />
+            {images[current] && (
+              <img
+                src={images[current].src}
+                alt={images[current].alt}
+                className={`w-full max-h-[600px] object-contain rounded-2xl shadow-2xl border-4 border-white bg-gray-50 transition-all duration-200 ease-in-out ${blurring ? 'blur-sm opacity-70' : ''}`}
+                style={{ minHeight: 320 }}
+              />
+            )}
             {/* Right arrow */}
             <button
               onClick={() => handleChange(current === images.length - 1 ? 0 : current + 1)}
