@@ -1,6 +1,6 @@
 import { UAParser } from 'ua-parser-js';
 
-export const GA_TRACKING_ID = 'G-9ECRKF1PGB'; // Replace with your GA4 Measurement ID
+export const GA_TRACKING_ID = 'G-DGE70PDCMN'; // Updated to new GA4 Measurement ID
 
 // Utility to get readable device info
 export function getDeviceInfo() {
