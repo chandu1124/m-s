@@ -1,43 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Calendar, Clock, ExternalLink } from 'lucide-react';
 import { gtagEvent, getDeviceInfo } from '../lib/gtag';
 
 const EventDetails = () => {
-  const [isAnimated, setIsAnimated] = useState(false);
-  const [isVenueAnimated, setIsVenueAnimated] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const venueRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsAnimated(true);
-          }
-        });
-      },
-      { threshold: 0.05 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const venueObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVenueAnimated(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    if (venueRef.current) venueObserver.observe(venueRef.current);
-    return () => venueObserver.disconnect();
-  }, []);
-
   // @ts-ignore: gtag is injected by Google Analytics
   const handleDirectionsClick = () => {
     const device = getDeviceInfo();
@@ -78,7 +43,6 @@ const EventDetails = () => {
   return (
     <section 
       id="details" 
-      ref={sectionRef}
       className="py-20 px-4 bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen relative overflow-hidden"
     >
       {/* Animated background elements */}
@@ -88,9 +52,7 @@ const EventDetails = () => {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className={`text-center mb-16 transition-all duration-1000 ${
-          isAnimated ? 'opacity-100 transform translate-y-0 animate-fade-in-up' : 'opacity-0 transform translate-y-10'
-        }`}>
+        <div className="text-center mb-16 transition-all duration-1000 opacity-100 transform translate-y-0 animate-fade-in-up">
           <h2 className="font-serif text-6xl md:text-7xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-red-600 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 whitespace-pre-line break-words leading-tight md:leading-tight">
             Journey to Forever
           </h2>
@@ -103,8 +65,7 @@ const EventDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
           {/* Wedding Ceremony */}
           <div
-            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-rose-100 \
-              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-left' : 'opacity-0 transform -translate-x-20 animate-fade-out-down'}`}
+            className="group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-rose-100 opacity-100 transform translate-x-0 animate-fade-in-left"
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-rose-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -130,8 +91,7 @@ const EventDetails = () => {
 
           {/* Reception */}
           <div
-            className={`group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-red-100 \
-              ${isAnimated ? 'opacity-100 transform translate-x-0 animate-fade-in-right' : 'opacity-0 transform translate-x-20 animate-fade-out-down'}`}
+            className="group bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-500 hover:scale-105 border border-red-100 opacity-100 transform translate-x-0 animate-fade-in-right"
           >
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-rose-200 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -158,10 +118,8 @@ const EventDetails = () => {
 
         {/* Enhanced Venue Location */}
         <div
-          ref={venueRef}
-          className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-10 border border-rose-200 transition-all duration-1000 hover:shadow-3xl
-          ${isVenueAnimated ? 'opacity-100 animate-fade-in-up' : 'opacity-0 translate-y-10'}
-          relative overflow-hidden max-w-5xl mx-auto flex items-center justify-center min-h-[400px]`}
+          className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-10 border border-rose-200 transition-all duration-1000 hover:shadow-3xl opacity-100 animate-fade-in-up
+          relative overflow-hidden max-w-5xl mx-auto flex items-center justify-center min-h-[400px]"
         >
           {/* Venue background image */}
           <img 
@@ -171,10 +129,10 @@ const EventDetails = () => {
             style={{filter: 'blur(2px)'}}
           />
           <div className="relative z-10 text-center mb-10 pb-4 flex flex-col items-center justify-center w-full">
-            <h3 className={`font-serif text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-700 via-pink-700 to-red-700 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 break-words whitespace-pre-line w-full max-w-full overflow-visible leading-snug min-h-[4.5rem] md:min-h-[6rem] flex items-center justify-center ${isVenueAnimated ? 'animate-fade-in-center' : 'opacity-0'}`}>The Setting of Our Story
+            <h3 className="font-serif text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-700 via-pink-700 to-red-700 bg-clip-text text-transparent mb-8 hover:scale-105 transition-transform duration-300 break-words whitespace-pre-line w-full max-w-full overflow-visible leading-snug min-h-[4.5rem] md:min-h-[6rem] flex items-center justify-center animate-fade-in-center">The Setting of Our Story
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-rose-500 to-red-500 mx-auto mb-8"></div>
-            <div className={`max-w-5xl mx-auto space-y-6 text-gray-700 leading-relaxed ${isVenueAnimated ? 'animate-fade-in-center' : 'opacity-0'}`}>
+            <div className="max-w-5xl mx-auto space-y-6 text-gray-700 leading-relaxed animate-fade-in-center">
               <p className="text-xl font-medium text-rose-800">
                 "A place where culture and grace come together to write love’s most beautiful chapter"
               </p>

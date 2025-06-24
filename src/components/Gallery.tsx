@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Gallery = () => {
   const images = [
@@ -12,7 +13,6 @@ const Gallery = () => {
     { src: "/gallery/8.avif", alt: "Gallery Image 8" }
   ];
   const [current, setCurrent] = useState(0);
-  const [blurring, setBlurring] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -21,7 +21,6 @@ const Gallery = () => {
     const observer = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Only show video if fully visible
           setShowVideo(entry.intersectionRatio === 1);
         });
       },
@@ -32,12 +31,7 @@ const Gallery = () => {
   }, []);
 
   const handleChange = (nextIdx: number) => {
-    if (nextIdx === current) return;
-    setBlurring(true);
-    setTimeout(() => {
-      setCurrent(nextIdx);
-      setBlurring(false);
-    }, 180); // Fast blur transition
+    setCurrent(nextIdx);
   };
 
   return (
@@ -86,11 +80,11 @@ const Gallery = () => {
               <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="#e11d48" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
             {images[current] && (
-              <img
+              <motion.img
                 src={images[current].src}
                 alt={images[current].alt}
-                className={`w-full max-h-[600px] object-contain rounded-2xl shadow-2xl border-4 border-white bg-gray-50 transition-all duration-200 ease-in-out ${blurring ? 'blur-sm opacity-70' : ''}`}
-                style={{ minHeight: 320 }}
+                className="w-full max-h-[600px] object-contain rounded-2xl shadow-2xl border-4 border-white bg-gray-50 transition-all duration-200 ease-in-out"
+                style={{ minHeight: 320, cursor: 'pointer' }}
               />
             )}
             {/* Right arrow */}
